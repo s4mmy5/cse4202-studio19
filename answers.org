@@ -1,5 +1,8 @@
 #+title: Studio 19: I/O Event Handling
 
+* Contributors
+- Jonathan Rodriguez Gomez
+
 * Using select()
 Program Output:
 #+begin_example
@@ -82,3 +85,57 @@ Quit command received
 #+end_example
 
 * Using epoll with Client-Server
+Client Output:
+#+begin_example
+sammy@ramanujan:~/Nextcloud/college/Classes/2026/Spring/CSE4202/studios/cse4202-studio19/files$ ./epoll_client
+Connection established
+sammy@ramanujan:~/nextcloud/college/classes/2026/spring/cse4202/studios/cse4202-studio19/files$ ./epoll_client
+Connection established
+#+end_example
+
+Server Output (before STDIN input):
+#+begin_example
+sammy@ramanujan:~/nextcloud/college/classes/2026/spring/cse4202/studios/cse4202-studio19/files$ ./epoll_server
+Input available from Client 1
+Client 1 has closed the connection
+Input available from Client 2
+Client 2 has closed the connection
+#+end_example
+
+Server Output (after STDIN input):
+#+begin_example
+studio19/files$ ./epoll_server
+Input available from Client 1
+Client 1 has closed the connection
+Input available from Client 2
+Client 2 has closed the connection
+
+[...]
+
+Input available in STDIN
+Input available in STDIN
+Input available in STDIN
+Input available in STDIN
+#+end_example
+
+This happens because unlike the client socket STDIN is not closed after it obtains data. Since the default mode of epoll is level-triggered and the data is not cleaned up epoll keeps creating an EPOLLIN event for STDIN.
+
+** Using EPOLLET
+Client Output:
+#+begin_example
+sammy@ramanujan:~/Nextcloud/college/Classes/2026/Spring/CSE4202/studios/cse4202-studio19/files$ ./epoll_client
+Connection established
+sammy@ramanujan:~/Nextcloud/college/Classes/2026/Spring/CSE4202/studios/cse4202-studio19/files$ ./epoll_client
+Connection established
+#+end_example
+
+Server Output:
+#+begin_example
+sammy@ramanujan:~/Nextcloud/college/Classes/2026/Spring/CSE4202/studios/cse4202-studio19/files$ ./epoll_server
+Input available from Client 1
+Client 1 has closed the connection
+Input available from Client 2
+Client 2 has closed the connection
+test
+Input available in STDIN
+#+end_example
