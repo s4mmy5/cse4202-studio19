@@ -120,7 +120,7 @@ Input available in STDIN
 
 This happens because unlike the client socket STDIN is not closed after it obtains data. Since the default mode of epoll is level-triggered and the data is not cleaned up epoll keeps creating an EPOLLIN event for STDIN.
 
-** Using EPOLLET
+** The EPOLLET flag
 Client Output:
 #+begin_example
 sammy@ramanujan:~/Nextcloud/college/Classes/2026/Spring/CSE4202/studios/cse4202-studio19/files$ ./epoll_client
@@ -139,3 +139,5 @@ Client 2 has closed the connection
 test
 Input available in STDIN
 #+end_example
+
+Since the change to a POLLIN state only happens once, we don't see the same behavior with STDIN in this case. As we can see the client socket behaves pretty much the same since we are not reading the data that becomes available.
