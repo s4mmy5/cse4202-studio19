@@ -1,0 +1,2 @@
+Checks: 'clang-analyzer-*,modernize-*, -modernize-use-trailing-return-type,readability-magic-numbers, -modernize-avoid-c-arrays'
+WarningsAsErrors: '*'

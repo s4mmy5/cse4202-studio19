@@ -1,3 +1,84 @@
 #+title: Studio 19: I/O Event Handling
 
 * Using select()
+Program Output:
+#+begin_example
+sammy@mac files % ./ex2
+test
+Input available in STDIN
+Input received: test
+
+12
+Input available in STDIN
+Input received: 12
+
+quit
+Input available in STDIN
+Input received: quit
+Quit command received
+#+end_example
+
+* Using select() with INET Server-Client
+Client Output:
+#+begin_example
+sammy@mac files % ./select_client
+Connection established
+Server FQDN: mac.dhcp.wustl.edu
+Server time of day: 1776704232.617814
+
+sammy@mac files % ./select_client
+Connection established
+Server FQDN: mac.dhcp.wustl.edu
+Server time of day: 1776704237.598486
+
+#+end_example
+
+Server Output:
+#+begin_example
+sammy@mac files % ./select_server
+Client connection #0 accepted
+Client connection #1 accepted
+test
+Input available in STDIN
+Input received: test
+
+quit
+Input available in STDIN
+Input received: quit
+Quit command received
+#+end_example
+
+* Using poll() with INET Server-Client
+
+Client Output:
+#+begin_example
+sammy@mac files % ./poll_client
+Connection established
+sammy@mac files % ./poll_client
+Connection established
+sammy@mac files % ./poll_client quit
+Connection established
+Issuing quit command
+#+end_example
+
+Server Output:
+#+begin_example
+sammy@mac files % ./poll_server
+Client 1: Message 1
+Client 1: Message 2
+test
+Input received from STDIN: test
+
+Client 2: Message 1
+Client 2: Message 2
+Client 3: Message 1
+Client 3: Message 2
+Client 3: quit
+Quit command received
+sammy@mac files % ./poll_server
+quit
+Input received from STDIN: quit
+Quit command received
+#+end_example
+
+* Using epoll with Client-Server
